@@ -1,4 +1,4 @@
-# ATS-Project
+# Keyword-Comparison-Project
 Tool to generate keyword insights between two documents and to generate visual comparisons of the keyword data
 
 Usage
