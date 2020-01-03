@@ -23,6 +23,7 @@ library(reshape2)
 library(compare)
 
 # Define Functions
+# Text-mining and word cloud creation derived from STHDA "Text mining and word cloud fundamentals in R : 5 simple steps you should know" and modified to fit the application
 keyword_ranking <- function(filePath){
   text <- readLines(filePath, warn = FALSE)
   
