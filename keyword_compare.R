@@ -24,6 +24,7 @@ library(compare)
 
 # Define Functions
 # Text-mining and word cloud creation derived from STHDA "Text mining and word cloud fundamentals in R : 5 simple steps you should know" and modified to fit the application
+# Stemming algorithm borrowed from Snowball - Porter Stemming Algorithm
 keyword_ranking <- function(filePath){
   text <- readLines(filePath, warn = FALSE)
   
@@ -59,7 +60,7 @@ keyword_ranking <- function(filePath){
   # Text stemming (Optional - efectively does this: Management && Managed == Manage*)
   docs <- tm_map(docs, stemDocument)
   # Specify your own stopwords if desired
-  docs <- tm_map(docs, removeWords, c("use", "can", "find"))
+  docs <- tm_map(docs, removeWords, c("use", "can", "find", "will", "make", "abil", "set"))
   
   #For later: add in functionality to see what the stem is/was and what actual full words are contained in it
   #For later: add in functionality to identify phrases (ie. "data analytics" when applicable instead of "data" and "analytics" used separately)
