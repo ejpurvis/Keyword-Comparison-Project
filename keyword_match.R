@@ -69,7 +69,7 @@ keyword_ranking <- function(filePath){
 # Body
 
 # Read text from following file location
-filePathR <- "/Users/Evan/Library/Mobile Documents/com~apple~CloudDocs/Resumes/2020 Resumes/ATS Project/Posting Text Files/Evan Purvis – Resume V1.txt"
+filePathR <- file.choose()
 filePathC <- file.choose()
 title <- basename(filePathC)
 titleR <- basename(filePathR)
@@ -116,9 +116,6 @@ d <- melt(d, id.vars='word')
 
 colnames(d) <- c("word","type","freq")
 
-# ax <- dx %>%
-#         mutate(word = fct_reorder(word,desc(freq)))
-
 ax <- d[d$type == "freqB",]
 
 a <- ifelse(ax$freq == 0 , "red", "black")
@@ -129,7 +126,7 @@ ggplot(d, aes(word, freq, fill = type)) +
   geom_col(position = "dodge", width = 0.75) +
   scale_x_discrete(limits = ax$word) +
   geom_text(check_overlap = TRUE,aes(label=freq, group = type), size = 3, vjust = 1.25, colour = "black", position = position_dodge(0.75)) +
-  ggtitle(paste("Ranked Keywords for: ","TEST FILE")) +
+  ggtitle(paste("Ranked Keywords for: ",title)) +
   theme(plot.title=element_text(size=15, vjust=6)) +
   theme(plot.margin = unit(c(1,1,1,1), "cm")) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1, colour = a))
