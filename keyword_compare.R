@@ -60,7 +60,7 @@ keyword_ranking <- function(filePath){
   # Text stemming (Optional - efectively does this: Management && Managed == Manage*)
   docs <- tm_map(docs, stemDocument)
   # Specify your own stopwords if desired
-  docs <- tm_map(docs, removeWords, c("use", "can", "find", "will", "make", "abil", "set"))
+  docs <- tm_map(docs, removeWords, c("use", "can", "find", "will", "make", "abil", "set", "'ll", "take", "want", "abl", "role", "area", "practic", "include", "work"))
   
   #For later: add in functionality to see what the stem is/was and what actual full words are contained in it
   #For later: add in functionality to identify phrases (ie. "data analytics" when applicable instead of "data" and "analytics" used separately)
@@ -71,8 +71,13 @@ keyword_ranking <- function(filePath){
 # Body
 
 # Read text from following file location
-filePathR <- file.choose()
 filePathC <- file.choose()
+filePathR <- file.choose()
+
+wdpath <- gsub("(.*)/.*","\\1",filePathC)
+
+setwd(wdpath)
+
 title <- basename(filePathC)
 titleR <- basename(filePathR)
 
@@ -118,9 +123,28 @@ d <- melt(d, id.vars='word')
 
 colnames(d) <- c("word","type","freq")
 
+# Flagging x-axis labels as good or bad (black or red respectively)
 ax <- d[d$type == "freqB",]
-
 a <- ifelse(ax$freq == 0 , "red", "black")
+
+# Create export file containing words that are used at least twice from the posting
+ay <- d[d$type == "freqA",]
+ay[, "title"] <- title
+
+co <- sub("\\ –.*", "", ay$title)  
+ay[, "co"] <- co
+
+pos <- gsub(".*– |.txt.*", "", ay$title)
+ay[,"pos"] <- pos
+
+drops <- c("title")
+ay <- ay[,!(names(ay) %in% drops)]
+
+ay <- ay[,c(4,5,1,2,3)]
+
+s <- gsub("(.*).txt.*","\\1",filePathC)
+csvpath <- paste(s,".csv",sep = "")
+write.csv(ay,csvpath)
 
 # Grouped barplot
 ggplot(d, aes(word, freq, fill = type)) +
